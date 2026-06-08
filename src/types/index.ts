@@ -35,3 +35,10 @@ export interface PingResponse {
   username: string;
   timestamp: string;
 }
+export interface SimMessage {
+  id: number;
+  from: string;
+  to: string;
+  message: string;
+  time: string;
+}
