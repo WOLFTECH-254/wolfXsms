@@ -1,4 +1,3 @@
-﻿import { usePageMeta } from '../hooks/usePageMeta';
 import { useState } from "react";
 import Topbar from "../components/ui/Topbar";
 import { sendSms } from "../lib/api";
@@ -15,12 +14,13 @@ export default function Send() {
 
   const sendSingle = async () => {
     const phone = formatPhone(sTo);
-    if (!phone || !sMsg) { showToast("Number and message are required."); return; }
-    if (!isValidPhone(phone)) { showToast("Invalid phone number."); return; }
+    if (!phone || !sMsg) { showToast("Number and message are required.", "warning"); return; }
+    if (!isValidPhone(phone)) { showToast("Invalid phone number.", "warning", "Use +254... or 07..."); return; }
     if (!s.gatewayUrl || !s.gatewayKey) {
       addLog({ to: phone, message: sMsg, status: "success", cost: "KES 0.00" });
       addSimMessage({ from: sFrom || "WolfSMS", to: phone, message: sMsg });
-      showToast("Sent to simulator!"); setSTo(""); setSMsg(""); return;
+      showToast("Sent to simulator!", "success", "Configure gateway in Settings to send real SMS");
+      setSTo(""); setSMsg(""); return;
     }
     setSending(true);
     try {
@@ -28,26 +28,34 @@ export default function Send() {
       if (res.success) {
         addLog({ to: phone, message: sMsg, status: "success", cost: "KES 0.80" });
         addSimMessage({ from: sFrom || "WolfSMS", to: phone, message: sMsg });
-        showToast("Sent!"); setSTo(""); setSMsg("");
-      } else { addLog({ to: phone, message: sMsg, status: "failed" }); showToast("Error: " + (res.error || "Failed")); }
-    } catch { showToast("Network error."); } finally { setSending(false); }
+        showToast("Message sent successfully!", "success", `Delivered to ${phone}`);
+        setSTo(""); setSMsg("");
+      } else {
+        addLog({ to: phone, message: sMsg, status: "failed" });
+        showToast("Failed to send", "error", res.error || "Unknown error");
+      }
+    } catch { showToast("Network error", "error", "Is the gateway running?"); }
+    finally { setSending(false); }
   };
 
   const sendBulk = async () => {
     const numbers = bTo.split(/[\n,]+/).map((n) => formatPhone(n.trim())).filter(isValidPhone);
-    if (!numbers.length || !bMsg) { showToast("Valid numbers and message required."); return; }
+    if (!numbers.length || !bMsg) { showToast("Valid numbers and message required.", "warning"); return; }
     if (!s.gatewayUrl || !s.gatewayKey) {
       numbers.forEach((n) => { addLog({ to: n, message: bMsg, status: "success", cost: "KES 0.00" }); addSimMessage({ from: bFrom || "WolfSMS", to: n, message: bMsg }); });
-      showToast("Bulk sent to simulator! " + numbers.length + " messages."); setBTo(""); setBMsg(""); return;
+      showToast("Bulk sent to simulator!", "success", `${numbers.length} messages delivered`);
+      setBTo(""); setBMsg(""); return;
     }
     setSending(true);
     try {
       const res = await sendSms({ to: numbers, message: bMsg, from: bFrom || undefined });
       if (res.success) {
         numbers.forEach((n) => { addLog({ to: n, message: bMsg, status: "success", cost: "KES 0.80" }); addSimMessage({ from: bFrom || "WolfSMS", to: n, message: bMsg }); });
-        showToast("Bulk sent! " + res.data?.sent + "/" + numbers.length + " delivered."); setBTo(""); setBMsg("");
-      } else { showToast("Error: " + (res.error || "Failed")); }
-    } catch { showToast("Network error."); } finally { setSending(false); }
+        showToast("Bulk send complete!", "success", `${res.data?.sent}/${numbers.length} messages delivered`);
+        setBTo(""); setBMsg("");
+      } else { showToast("Bulk send failed", "error", res.error || "Unknown error"); }
+    } catch { showToast("Network error", "error", "Is the gateway running?"); }
+    finally { setSending(false); }
   };
 
   return (
@@ -55,9 +63,9 @@ export default function Send() {
       <Topbar title="Send SMS" />
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
         {!s.gatewayKey && (
-          <div style={{ background: "#ffedd5", border: "1px solid #fb923c", borderRadius: "0.75rem", padding: "0.75rem 1.25rem", fontSize: "0.8rem", color: "#7c2d12", display: "flex", gap: "0.5rem" }}>
+          <div style={{ background: "#ffedd5", border: "1px solid #fb923c", borderRadius: 10, padding: "10px 14px", fontSize: 13, color: "#7c2d12", display: "flex", gap: 8 }}>
             <i className="ti ti-info-circle" style={{ marginTop: 1 }} />
-            <span>No gateway configured â€” messages will go to the <strong>Simulator</strong>. Configure in Settings to send real SMS.</span>
+            <span>No gateway configured. Messages go to the Simulator. Configure in Settings to send real SMS.</span>
           </div>
         )}
         <div className="card">
@@ -72,12 +80,11 @@ export default function Send() {
           </div>
           <button className="btn btn-primary" onClick={sendSingle} disabled={sending}><i className="ti ti-send" />{sending ? "Sending..." : "Send message"}</button>
         </div>
-
         <div className="card">
           <div className="card-title"><i className="ti ti-users" style={{ color: "#C98B4A" }} /> Bulk message</div>
           <div style={{ marginBottom: "0.875rem" }}>
             <label style={{ fontSize: "0.75rem", color: "#A0856B", display: "block", marginBottom: 5 }}>Recipients (one per line or comma-separated)</label>
-            <textarea className="form-input" style={{ resize: "none", height: 100 }} placeholder={"+254712345678\n+254722000000\n+254700111222"} value={bTo} onChange={(e) => setBTo(e.target.value)} />
+            <textarea className="form-input" style={{ resize: "none", height: 100 }} placeholder={"+254712345678\n+254722000000"} value={bTo} onChange={(e) => setBTo(e.target.value)} />
           </div>
           <div style={{ marginBottom: "0.875rem" }}>
             <label style={{ fontSize: "0.75rem", color: "#A0856B", display: "block", marginBottom: 5 }}>Sender ID (optional)</label>
