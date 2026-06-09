@@ -50,7 +50,6 @@ export default function Sidebar() {
   if (mobile) {
     return (
       <>
-        {/* Mobile topbar */}
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, height: 52,
           background: "#3B2A1A", zIndex: 9999,
@@ -65,32 +64,34 @@ export default function Sidebar() {
             style={{
               background: "#5C3D22", border: "none", color: "#F5EDE3",
               borderRadius: 8, width: 38, height: 38,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", fontSize: 20,
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              gap: 5, cursor: "pointer", padding: "8px 10px",
             }}
           >
-            <i className={`ti ${open ? "ti-x" : "ti-menu-2"}`} />
+            {open ? (
+              <i className="ti ti-x" style={{ fontSize: 20 }} />
+            ) : (
+              <>
+                <span style={{ display: "block", width: 18, height: 2, background: "#F5EDE3", borderRadius: 2 }} />
+                <span style={{ display: "block", width: 18, height: 2, background: "#F5EDE3", borderRadius: 2 }} />
+                <span style={{ display: "block", width: 18, height: 2, background: "#F5EDE3", borderRadius: 2 }} />
+              </>
+            )}
           </button>
         </div>
 
-        {/* Overlay + drawer */}
         {open && (
           <div style={{ position: "fixed", inset: 0, zIndex: 9998, top: 52 }}>
-            <div
-              onClick={() => setOpen(false)}
-              style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.55)" }}
-            />
+            <div onClick={() => setOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.55)" }} />
             <div style={{
               position: "absolute", top: 0, left: 0, bottom: 0,
               width: SIDEBAR_W, background: "#3B2A1A",
               display: "flex", flexDirection: "column",
               boxShadow: "4px 0 20px rgba(0,0,0,0.4)",
-              animation: "slideIn 0.2s ease",
             }}>
               <div style={{ padding: "16px 16px 12px", borderBottom: "1px solid #5C3D22" }}>
-                <div style={{ fontSize: 16, fontWeight: 700, color: "#F5EDE3" }}>
-                  wolf<span style={{ color: "#C98B4A" }}>X</span>sms
-                </div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: "#F5EDE3" }}>wolf<span style={{ color: "#C98B4A" }}>X</span>sms</div>
                 <div style={{ fontSize: 11, color: "#7A5C3E", marginTop: 2 }}>SMS Gateway</div>
               </div>
               <NavList />
@@ -98,12 +99,10 @@ export default function Sidebar() {
             </div>
           </div>
         )}
-        <style>{`@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }`}</style>
       </>
     );
   }
 
-  // Desktop
   return (
     <aside style={{
       width: SIDEBAR_W, background: "#3B2A1A",
@@ -111,9 +110,7 @@ export default function Sidebar() {
       position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 40,
     }}>
       <div style={{ padding: "22px 18px 14px", borderBottom: "1px solid #5C3D22" }}>
-        <div style={{ fontSize: 18, fontWeight: 700, color: "#F5EDE3" }}>
-          wolf<span style={{ color: "#C98B4A" }}>X</span>sms
-        </div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: "#F5EDE3" }}>wolf<span style={{ color: "#C98B4A" }}>X</span>sms</div>
         <div style={{ fontSize: 11, color: "#7A5C3E", marginTop: 2 }}>SMS Gateway</div>
       </div>
       <NavList />
