@@ -1,4 +1,5 @@
-﻿import { useState, useEffect } from "react";
+﻿import { usePageMeta } from '../hooks/usePageMeta';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Topbar from "../components/ui/Topbar";
 import { getLogs, addLog, getSettings, addSimMessage } from "../lib/storage";

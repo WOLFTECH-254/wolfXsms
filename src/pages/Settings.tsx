@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+﻿import { usePageMeta } from '../hooks/usePageMeta';
+import { useState } from "react";
 import Topbar from "../components/ui/Topbar";
 import { getSettings, saveSettings } from "../lib/storage";
 import { pingGateway } from "../lib/api";

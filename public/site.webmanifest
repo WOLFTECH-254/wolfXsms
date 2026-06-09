@@ -1,0 +1,13 @@
+﻿{
+  "name": "wolfXsms",
+  "short_name": "wolfXsms",
+  "description": "Self-hosted SMS Gateway for Kenyan Developers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3B2A1A",
+  "theme_color": "#3B2A1A",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/favicon-180.svg", "sizes": "180x180", "type": "image/svg+xml" }
+  ]
+}

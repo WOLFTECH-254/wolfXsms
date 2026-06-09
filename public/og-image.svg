@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#3B2A1A"/>
+  <rect x="0" y="0" width="6" height="630" fill="#C98B4A"/>
+  <rect x="1194" y="0" width="6" height="630" fill="#C98B4A"/>
+  <text x="600" y="220" font-family="Segoe UI,Arial,sans-serif" font-size="180" font-weight="700" fill="#C98B4A" text-anchor="middle">W</text>
+  <polygon points="660,80 580,280 630,280 555,480 705,240 650,240 700,80" fill="#F5EDE3" opacity="0.95"/>
+  <text x="600" y="370" font-family="Segoe UI,Arial,sans-serif" font-size="72" font-weight="700" fill="#F5EDE3" text-anchor="middle">wolfXsms</text>
+  <text x="600" y="440" font-family="Segoe UI,Arial,sans-serif" font-size="32" font-weight="400" fill="#C98B4A" text-anchor="middle">Self-hosted SMS Gateway for Kenyan Developers</text>
+  <text x="600" y="510" font-family="Segoe UI,Arial,sans-serif" font-size="24" font-weight="400" fill="#7A5C3E" text-anchor="middle">Powered by Africa's Talking</text>
+</svg>

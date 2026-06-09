@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+﻿import { usePageMeta } from '../hooks/usePageMeta';
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const features = [
